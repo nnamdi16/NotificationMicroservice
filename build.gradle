@@ -1,32 +1,32 @@
 buildscript {
-	ext {
-		springBootVersion = '2.4.3'
-	}
+    ext {
+        springBootVersion = '2.4.3'
+    }
 
-	repositories {
-		mavenLocal()
-		mavenCentral()
-		jcenter()
-		maven { url "http://repo.spring.io/libs-snapshot" }
-	}
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url "http://repo.spring.io/libs-snapshot" }
+    }
 
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 plugins {
-	id 'org.springframework.boot' version '2.4.3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'war'
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'war'
 }
 
 repositories {
-	mavenLocal()
-	mavenCentral()
-	jcenter()
-	maven { url "http://repo.spring.io/libs-snapshot" }
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url "http://repo.spring.io/libs-snapshot" }
 }
 
 group = 'com.nnamdi'
@@ -43,62 +43,50 @@ def slf4Version = '1.8.0-beta1'
 
 
 configurations {
-	all {
-		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-	}
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+task stage {
+    dependsOn build
 }
 
 jar {
-	baseName = 'app'
-	version = '0.0.1'
+    baseName = 'notification-0.0.1-SNAPSHOT'
 }
-
-task stage() {
-	dependsOn clean, war
-}
-war.mustRunAfter clean
-
-task copyToLib(type: Copy) {
-	into "$buildDir/server"
-	from(configurations.compile) {
-		include "webapp-runner*"
-	}
-}
-
-stage.dependsOn(copyToLib)
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compile 'it.ozimov:spring-boot-email-core:0.6.3'
-	compile 'org.springframework.boot:spring-boot-starter-mail:2.4.3'
-	compile 'com.github.jsimone:webapp-runner:8.5.11.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compile 'it.ozimov:spring-boot-email-core:0.6.3'
+    compile 'org.springframework.boot:spring-boot-starter-mail:2.4.3'
 
-	compile("io.springfox:springfox-swagger2:2.6.1")
-	compile('io.springfox:springfox-swagger-ui:2.6.1')
+    compile("io.springfox:springfox-swagger2:2.6.1")
+    compile('io.springfox:springfox-swagger-ui:2.6.1')
 
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
 
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
-	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: jacksonVersion
-	compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jaxb-annotations', version: jacksonVersion
-	compile group: 'org.codehaus.woodstox', name: 'stax2-api', version: '4.0.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jaxb-annotations', version: jacksonVersion
+    compile group: 'org.codehaus.woodstox', name: 'stax2-api', version: '4.0.0'
 
-	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4j2Version
-	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version
-	compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j2Version
-	compile group: 'org.slf4j', name: 'slf4j-api', version: slf4Version
-	compile group: 'org.slf4j', name: 'jul-to-slf4j', version: slf4Version
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4j2Version
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j2Version
+    compile group: 'org.slf4j', name: 'slf4j-api', version: slf4Version
+    compile group: 'org.slf4j', name: 'jul-to-slf4j', version: slf4Version
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
