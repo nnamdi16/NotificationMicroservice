@@ -1,17 +1,31 @@
 package com.nnamdi.notification.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @JsonIgnoreProperties
+@Component
 public class Message {
+    private String password;
+
     private Long messageId;
     private String subject;
     private String from;
     private String to;
     private String body;
     private String sentTime;
+
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Message() {
         this.sentTime = LocalDateTime.now().toString();
