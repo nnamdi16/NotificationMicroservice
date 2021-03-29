@@ -1,19 +1,15 @@
 package com.nnamdi.notification.service.channel;
 
-import com.google.common.collect.Lists;
 import com.nnamdi.notification.model.ChannelType;
 import com.nnamdi.notification.model.Message;
 import com.nnamdi.notification.util.EmailValidator;
-import it.ozimov.springboot.mail.model.Email;
-import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
 import it.ozimov.springboot.mail.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import javax.mail.internet.InternetAddress;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
+import javax.mail.MessagingException;
 
 @Component
 public class EmailChannel implements Channel{
@@ -24,11 +20,17 @@ public class EmailChannel implements Channel{
     @Autowired
     private EmailService emailService;
 
-    @Value("${spring.mail.username}")
-    private String fromEmail;
+    @Autowired
+    Message message;
+
+    private JavaMailSender javaMailSender;
+
+    public EmailChannel(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     @Override
-    public void notify(Message msg) {
+    public void notify(Message msg) throws MessagingException {
         if (!emailValidator.isValid(msg.getFrom())) {
             throw new RuntimeException("Invalid email format in - from address ");
         }
@@ -38,14 +40,13 @@ public class EmailChannel implements Channel{
         }
 
         try {
-            Email email = DefaultEmail.builder()
-                            .from(new InternetAddress(fromEmail, "Notification Service"))
-                            .to(Lists.newArrayList(new InternetAddress(
-                                    msg.getTo(), ""
-                            ))).subject(msg.getSubject())
-                            .body(msg.getBody())
-                            .encoding("UTF-8").build();
-            emailService.send(email);
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            simpleMailMessage.setTo(msg.getTo());
+            simpleMailMessage.setSubject(msg.getSubject());
+            simpleMailMessage.setText(msg.getBody());
+            simpleMailMessage.setFrom(msg.getFrom());
+            javaMailSender.send(simpleMailMessage);
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to send message using email channel, exception " + e.getMessage(),e);
         }
