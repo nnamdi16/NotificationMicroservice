@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties
 @Component
 public class Message {
-    private String password;
 
     private Long messageId;
     private String subject;
@@ -17,15 +16,6 @@ public class Message {
     private String body;
     private String sentTime;
 
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Message() {
         this.sentTime = LocalDateTime.now().toString();
