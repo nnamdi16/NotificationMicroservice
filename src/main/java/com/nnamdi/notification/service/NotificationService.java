@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -32,7 +33,7 @@ public class NotificationService {
      * @param msg
      * @return
      */
-    public long notifyAll(Message msg) {
+    public long notifyAll(Message msg) throws MessagingException {
         for (Channel c: factory.getChannels()) {
             msg.setMessageId((long) notificationId.getAndIncrement());
             c.notify(msg);
@@ -49,7 +50,7 @@ public class NotificationService {
      * @param message
      * @return
      */
-    public long notify(ChannelType channelType, Message message) {
+    public long notify(ChannelType channelType, Message message) throws MessagingException {
         message.setMessageId((long) notificationId.getAndIncrement());
         factory.get(channelType).notify(message);
         LOGGER.debug("ID = "+notificationId+", Message sent =" +message);
