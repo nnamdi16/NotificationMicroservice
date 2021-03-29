@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '2.4.3'
+        set('springCloudVersion', "Hoxton.RELEASE")
     }
 
     repositories {
@@ -27,6 +28,12 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "http://repo.spring.io/libs-snapshot" }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 group = 'com.nnamdi'
@@ -68,6 +75,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile 'it.ozimov:spring-boot-email-core:0.6.3'
     compile 'org.springframework.boot:spring-boot-starter-mail:2.4.3'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+    implementation 'com.amazonaws:aws-java-sdk-ses'
 
     compile("io.springfox:springfox-swagger2:2.6.1")
     compile('io.springfox:springfox-swagger-ui:2.6.1')
