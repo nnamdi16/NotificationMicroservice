@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 
 @RestController
 @Api(value = "Notification Microservice")
@@ -30,7 +32,7 @@ public class NotificationController {
     @ApiOperation(value = "Notify the given message to given channelType")
     @ApiResponses(value = {@ApiResponse(code=404, message = "Not Found")})
     @PostMapping("/notify/{channelType}")
-    public long notify(@PathVariable ChannelType channelType, @RequestBody Message message) {
+    public long notify(@PathVariable ChannelType channelType, @RequestBody Message message) throws MessagingException {
         if (ChannelType.email == channelType) {
             if (!emailValidator.isValid(message.getFrom())) {
                 throw new BadRequest("From Address", message.getFrom());
@@ -46,7 +48,7 @@ public class NotificationController {
     @ApiOperation(value = "Notify the given message to all channels like email and sms")
     @ApiResponses(value = {@ApiResponse(code=404, message = "Not Found")})
     @PostMapping("/notifyAll")
-    public long notifyAll(@RequestBody Message message) {
+    public long notifyAll(@RequestBody Message message) throws MessagingException {
         return notificationService.notifyAll(message);
     }
 
