@@ -5,6 +5,7 @@ import com.nnamdi.notification.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @Component
@@ -28,7 +29,7 @@ public class ChannelFactory {
                 .orElseThrow(() ->new RuntimeException("No Channel found with type " + channelType));
     }
 
-    public void notifyAll(Message message) {
+    public void notifyAll(Message message) throws MessagingException {
         for (Channel channel: channelList){
             channel.notify(message);
         }
