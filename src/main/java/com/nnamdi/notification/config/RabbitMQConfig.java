@@ -32,6 +32,9 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.host}")
     private String host;
 
+    @Value("${rabbitmq.url}")
+    private String rabbitMQUri;
+
     @Bean
     Queue queue() {
         return  new Queue(queue, true);
@@ -50,8 +53,11 @@ public class RabbitMQConfig {
     @Bean
     ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(host);
-        cachingConnectionFactory.setUsername(username);
-        cachingConnectionFactory.setPassword(password);
+        cachingConnectionFactory.setUri(rabbitMQUri);
+        cachingConnectionFactory.setRequestedHeartBeat(30);
+        cachingConnectionFactory.setConnectionTimeout(30);
+//        cachingConnectionFactory.setUsername(username);
+//        cachingConnectionFactory.setPassword(password);
         return cachingConnectionFactory;
     }
 
