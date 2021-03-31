@@ -53,9 +53,11 @@ public class RabbitMQConfig {
     @Bean
     ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(host);
-        cachingConnectionFactory.setUri(rabbitMQUri);
+//        cachingConnectionFactory.setUri(rabbitMQUri);
         cachingConnectionFactory.setRequestedHeartBeat(30);
-        cachingConnectionFactory.setConnectionTimeout(30);
+        cachingConnectionFactory.setConnectionTimeout(30000);
+        cachingConnectionFactory.setUsername(username);
+        cachingConnectionFactory.setPassword(password);
 //        cachingConnectionFactory.setUsername(username);
 //        cachingConnectionFactory.setPassword(password);
         return cachingConnectionFactory;

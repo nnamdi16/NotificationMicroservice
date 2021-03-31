@@ -94,7 +94,9 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j2Version
     compile group: 'org.slf4j', name: 'slf4j-api', version: slf4Version
     compile group: 'org.slf4j', name: 'jul-to-slf4j', version: slf4Version
+//    compile 'org.springframework.amqp:spring-rabbit:2.3.6'
     compile 'org.springframework.boot:spring-boot-starter-amqp:2.4.3'
+//    compile 'org.springframework.amqp:spring-rabbit:1.4.5.RELEASE'
 }
 
 test {
