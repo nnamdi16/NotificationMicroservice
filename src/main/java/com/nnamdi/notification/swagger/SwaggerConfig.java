@@ -11,6 +11,7 @@ import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -43,6 +44,8 @@ public class SwaggerConfig {
                 .globalResponseMessage(RequestMethod.DELETE, res)
                 .apiInfo(info)
                 .groupName(V1)
+                .useDefaultResponseMessages(false)
+                .tags(new Tag("Notification Microservice", "Send Notification to registered users"))
                 .select()
                 .paths(PathSelectors.regex(".*/"+V1+".*"))
                 .build();
@@ -51,6 +54,7 @@ public class SwaggerConfig {
     private ApiInfo buildApiInfo(String ver) {
         return new ApiInfoBuilder()
                     .title("Notification Microservice")
+                    .description("this is in charge of sending notifications (either mail, sms, etc) to the accounts holders")
                     .version(ver)
                     .build();
     }
