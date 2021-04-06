@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.mail.MessagingException;
 
 @Repository
-public interface Channel {
+public interface NotificationChannel {
     default  void notify(Message message) throws MessagingException {
         throw new RuntimeException("Notify method is not implemented yet");
     }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 
 @Component
-public class EmailChannel implements Channel{
+public class EmailNotificationChannel implements NotificationChannel {
 
     @Autowired
     private EmailValidator emailValidator;
@@ -25,7 +25,7 @@ public class EmailChannel implements Channel{
 
     private JavaMailSender javaMailSender;
 
-    public EmailChannel(JavaMailSender javaMailSender) {
+    public EmailNotificationChannel(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
