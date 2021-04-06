@@ -2,8 +2,8 @@ package com.nnamdi.notification.service;
 
 import com.nnamdi.notification.model.ChannelType;
 import com.nnamdi.notification.model.Message;
-import com.nnamdi.notification.service.channel.Channel;
-import com.nnamdi.notification.service.channel.ChannelFactory;
+import com.nnamdi.notification.service.channel.NotificationChannel;
+import com.nnamdi.notification.service.channel.NotificationChannelFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ public class NotificationService {
     private static final Logger LOGGER = LogManager.getLogger(NotificationService.class);
 
     @Autowired
-    ChannelFactory factory;
+    NotificationChannelFactory factory;
 
 
-    public NotificationService(ChannelFactory factory) {
+    public NotificationService(NotificationChannelFactory factory) {
         this.factory = factory;
     }
 
@@ -34,7 +34,7 @@ public class NotificationService {
      * @return
      */
     public long notifyAll(Message msg) throws MessagingException {
-        for (Channel c: factory.getChannels()) {
+        for (NotificationChannel c: factory.getChannels()) {
             msg.setMessageId((long) notificationId.getAndIncrement());
             c.notify(msg);
             LOGGER.debug("ID = "+notificationId+", Message Sent = "+msg);
